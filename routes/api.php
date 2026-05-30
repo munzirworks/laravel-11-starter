@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\SalesOrderController;
 use App\Http\Controllers\Api\StockController;
 use App\Http\Controllers\Api\WarehouseController;
 use App\Http\Controllers\Api\PricingController;
+use App\Http\Controllers\Api\QuotationController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('login', [AuthController::class, 'login']);
@@ -24,4 +25,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('stock-adjustments', [StockController::class, 'adjustment']);
     Route::apiResource('customer-product-prices', PricingController::class, ['only' => ['index', 'store', 'show', 'update']]);
     Route::post('pricing/calculate', [PricingController::class, 'calculate']);
+    Route::apiResource('quotations', QuotationController::class, ['only' => ['index', 'store', 'show', 'update']]);
+    Route::post('quotations/{quotation}/convert-to-sales-order', [QuotationController::class, 'convertToSalesOrder']);
 });
