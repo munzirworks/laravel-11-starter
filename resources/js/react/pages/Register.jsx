@@ -1,10 +1,9 @@
 import React, { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 
 export default function Register() {
   const { register } = useAuth()
-  const navigate = useNavigate()
   const [form, setForm] = useState({
     name: '',
     email: '',
@@ -28,7 +27,7 @@ export default function Register() {
 
     try {
       await register(form.name, form.email, form.password, form.password_confirmation)
-      navigate('/app/dashboard', { replace: true })
+      window.location.href = '/dashboard'
     } catch (err) {
       if (err.response?.status === 422) {
         setErrors(err.response.data.errors || {})

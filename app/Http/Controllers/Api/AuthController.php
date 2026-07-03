@@ -9,6 +9,7 @@ use App\Http\Requests\Api\RegisterRequest;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -21,6 +22,9 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
             'role' => UserRole::Staff,
         ]);
+
+        Auth::guard('web')->login($user);
+        $request->session()->regenerate();
 
         $token = $user->createToken('api-token')->plainTextToken;
 
@@ -39,6 +43,9 @@ class AuthController extends Controller
             return response()->json(['message' => 'Invalid credentials.'], 401);
         }
 
+        Auth::guard('web')->login($user);
+        $request->session()->regenerate();
+
         $token = $user->createToken('api-token')->plainTextToken;
 
         return response()->json([
@@ -50,7 +57,13 @@ class AuthController extends Controller
 
     public function logout(Request $request): JsonResponse
     {
-        $request->user()->currentAccessToken()->delete();
+        $request->user()?->currentAccessToken()?->delete();
+        Auth::guard('web')->logout();
+
+        if ($request->hasSession()) {
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+        }
 
         return response()->json(['message' => 'Logged out.']);
     }

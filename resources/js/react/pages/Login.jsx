@@ -1,17 +1,13 @@
 import React, { useState } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 
 export default function Login() {
   const { login } = useAuth()
-  const navigate = useNavigate()
-  const location = useLocation()
   const [form, setForm] = useState({ email: '', password: '' })
   const [errors, setErrors] = useState({})
   const [error, setError] = useState('')
   const [submitting, setSubmitting] = useState(false)
-
-  const redirectTo = location.state?.from?.pathname || '/app/dashboard'
 
   function handleChange(event) {
     const { name, value } = event.target
@@ -26,7 +22,7 @@ export default function Login() {
 
     try {
       await login(form.email, form.password)
-      navigate(redirectTo, { replace: true })
+      window.location.href = '/dashboard'
     } catch (err) {
       if (err.response?.status === 422) {
         setErrors(err.response.data.errors || {})

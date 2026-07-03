@@ -1,5 +1,5 @@
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react'
-import apiClient, { getStoredToken, setStoredToken } from '../api/client'
+import apiClient, { ensureCsrfCookie, getStoredToken, setStoredToken } from '../api/client'
 
 const AuthContext = createContext(null)
 
@@ -35,6 +35,7 @@ export function AuthProvider({ children }) {
   }, [token])
 
   const login = useCallback(async (email, password) => {
+    await ensureCsrfCookie()
     const { data } = await apiClient.post('/login', { email, password })
     setStoredToken(data.access_token)
     setToken(data.access_token)
@@ -43,6 +44,7 @@ export function AuthProvider({ children }) {
   }, [])
 
   const register = useCallback(async (name, email, password, passwordConfirmation) => {
+    await ensureCsrfCookie()
     const { data } = await apiClient.post('/register', {
       name,
       email,

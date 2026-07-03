@@ -4,6 +4,8 @@ import axios from 'axios'
 // CORS/base URL configuration is needed beyond the '/api' prefix.
 const apiClient = axios.create({
   baseURL: '/api',
+  withCredentials: true,
+  withXSRFToken: true,
   headers: {
     Accept: 'application/json',
   },
@@ -21,6 +23,13 @@ export function setStoredToken(token) {
   } else {
     localStorage.removeItem(TOKEN_STORAGE_KEY)
   }
+}
+
+export async function ensureCsrfCookie() {
+  await axios.get('/sanctum/csrf-cookie', {
+    withCredentials: true,
+    withXSRFToken: true,
+  })
 }
 
 // Attach the current token to every outgoing request.
