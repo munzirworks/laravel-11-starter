@@ -41,6 +41,7 @@ class RoleMiddlewareTest extends TestCase
         $this->actingAs($user)
             ->get(route('dashboard'))
             ->assertOk()
-            ->assertSee('Dashboard');
+            ->assertViewIs('landing')
+            ->assertSee('id="root"', false);
     }
 }

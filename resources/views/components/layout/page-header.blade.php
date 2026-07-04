@@ -4,8 +4,8 @@
 ])
 
 <div {{ $attributes->merge(['class' => 'mb-6']) }}>
-    <h1 class="text-2xl font-bold tracking-tight text-slate-900">{{ $title }}</h1>
+    <h1 class="text-2xl font-bold tracking-tight text-black">{{ $title }}</h1>
     @if ($description)
-        <p class="mt-1 text-sm text-slate-600">{{ $description }}</p>
+        <p class="mt-1 text-sm text-black/60">{{ $description }}</p>
     @endif
 </div>

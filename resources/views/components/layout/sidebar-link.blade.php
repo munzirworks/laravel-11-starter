@@ -16,10 +16,10 @@
     href="{{ $href }}"
     @click="if (window.innerWidth < 1024) sidebarOpen = false"
     {{ $attributes->merge([
-        'class' => 'flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition '
+        'class' => 'flex items-center gap-3 rounded-2xl px-4 py-2.5 text-sm font-medium transition '
             . ($active
-                ? 'bg-indigo-600 text-white'
-                : 'text-slate-300 hover:bg-slate-800 hover:text-white'),
+                ? 'bg-[#FF2D20] text-white shadow-sm'
+                : 'text-zinc-300 hover:bg-white/10 hover:text-white'),
     ]) }}
 >
     <svg class="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
