@@ -68,6 +68,8 @@ class RolePermissionSeeder extends Seeder
 
         $sales->syncPermissions([
             'customer.view',
+            'customer.create',
+            'customer.update',
             'product.view',
             'quotation.view',
             'quotation.create',

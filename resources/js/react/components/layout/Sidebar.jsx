@@ -59,10 +59,23 @@ function UsersIcon() {
   )
 }
 
+function BuildingStorefrontIcon() {
+  return (
+    <svg className="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true">
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M3 9.75L4.5 4.5h15L21 9.75m-18 0A2.25 2.25 0 005.25 12h.75A2.25 2.25 0 008.25 9.75m-5.25 0V19.5A1.5 1.5 0 004.5 21h15a1.5 1.5 0 001.5-1.5V9.75m-12.75 0A2.25 2.25 0 0010.5 12h3A2.25 2.25 0 0015.75 9.75m-7.5 0A2.25 2.25 0 0010.5 12m5.25-2.25A2.25 2.25 0 0018 12h.75A2.25 2.25 0 0021 9.75"
+      />
+    </svg>
+  )
+}
+
 export default function Sidebar({ isOpen, onClose }) {
-  const { user } = useAuth()
+  const { user, can } = useAuth()
   const role = roleFromUser(user)
   const isAdmin = role === 'admin'
+  const canViewCustomers = can('customer.view')
   const pathname = window.location.pathname
   const initial = user?.name?.trim()?.charAt(0)?.toUpperCase() || '?'
 
@@ -96,6 +109,13 @@ export default function Sidebar({ isOpen, onClose }) {
           <span>Profile</span>
         </a>
 
+        {canViewCustomers && (
+          <a href="/customers" onClick={handleNavClick} className={navLinkClass(pathname === '/customers' || pathname.startsWith('/customers/'))}>
+            <BuildingStorefrontIcon />
+            <span>Customers</span>
+          </a>
+        )}
+
         {isAdmin && (
           <>
             <p className="px-4 pb-2 pt-4 text-xs font-semibold uppercase tracking-wider text-zinc-500">Administration</p>
@@ -108,8 +128,8 @@ export default function Sidebar({ isOpen, onClose }) {
         )}
       </nav>
 
-      <div className="shrink-0 border-t border-white/10 p-4">
-        <div className="flex items-center gap-3">
+      <div className="mt-auto shrink-0 border-t border-white/10 p-4">
+        <div className="flex items-center gap-3 rounded-[24px] bg-white/5 p-3 ring-1 ring-white/10 backdrop-blur-sm">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-zinc-800 text-sm font-semibold text-white ring-1 ring-white/10">
             {initial}
           </div>

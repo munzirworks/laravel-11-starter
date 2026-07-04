@@ -42,7 +42,7 @@ export default function Topbar({ onToggleSidebar }) {
     try {
       await logout()
     } finally {
-      window.location.href = '/login'
+      window.location.href = '/'
     }
   }
 

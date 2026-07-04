@@ -14,9 +14,26 @@
     </head>
     <body
         class="bg-slate-50 font-sans antialiased"
-        x-data="{ sidebarOpen: false }"
+        x-data="{
+            sidebarOpen: false,
+            loggingOut: false,
+            logout() {
+                if (this.loggingOut) {
+                    return;
+                }
+
+                this.loggingOut = true;
+
+                localStorage.removeItem('erp_core_token');
+                this.$refs.logoutForm.submit();
+            },
+        }"
         @keydown.escape.window="sidebarOpen = false"
     >
+        <form x-ref="logoutForm" method="POST" action="{{ route('logout') }}" class="hidden">
+            @csrf
+        </form>
+
         <div class="flex min-h-screen">
             {{-- Mobile backdrop --}}
             <div

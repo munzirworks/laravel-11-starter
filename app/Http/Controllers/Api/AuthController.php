@@ -14,6 +14,15 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
+    protected function userPayload(User $user): array
+    {
+        $payload = $user->toArray();
+        $payload['roles'] = $user->getRoleNames()->values()->all();
+        $payload['permissions'] = $user->getAllPermissions()->pluck('name')->values()->all();
+
+        return $payload;
+    }
+
     public function register(RegisterRequest $request): JsonResponse
     {
         $user = User::create([
@@ -31,7 +40,7 @@ class AuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'Bearer',
-            'user' => $user,
+            'user' => $this->userPayload($user),
         ], 201);
     }
 
@@ -51,7 +60,7 @@ class AuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'Bearer',
-            'user' => $user,
+            'user' => $this->userPayload($user),
         ]);
     }
 
@@ -70,6 +79,6 @@ class AuthController extends Controller
 
     public function me(Request $request): JsonResponse
     {
-        return response()->json($request->user());
+        return response()->json($this->userPayload($request->user()));
     }
 }
