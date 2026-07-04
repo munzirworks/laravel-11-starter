@@ -28,6 +28,16 @@
             {{ __('Profile') }}
         </x-layout.sidebar-link>
 
+        @if (auth()->user()->can('customer.view'))
+            <x-layout.sidebar-link
+                :href="url('/customers')"
+                :active="request()->is('customers') || request()->is('customers/*')"
+                icon="customers"
+            >
+                {{ __('Customers') }}
+            </x-layout.sidebar-link>
+        @endif
+
         @if (auth()->user()->isAdmin())
             <p class="px-4 pb-2 pt-4 text-xs font-semibold uppercase tracking-wider text-zinc-500">
                 {{ __('Administration') }}
@@ -43,8 +53,8 @@
         @endif
     </nav>
 
-    <div class="shrink-0 border-t border-white/10 p-4">
-        <div class="flex items-center gap-3">
+    <div class="mt-auto shrink-0 border-t border-white/10 p-4">
+        <div class="flex items-center gap-3 rounded-[24px] bg-white/5 p-3 ring-1 ring-white/10 backdrop-blur-sm">
             <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-zinc-800 text-sm font-semibold text-white ring-1 ring-white/10">
                 {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
             </div>

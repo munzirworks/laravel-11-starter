@@ -1,3 +1,4 @@
+import axios from 'axios'
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react'
 import apiClient, { ensureCsrfCookie, getStoredToken, setStoredToken } from '../api/client'
 
@@ -59,7 +60,17 @@ export function AuthProvider({ children }) {
 
   const logout = useCallback(async () => {
     try {
-      await apiClient.post('/logout')
+      await axios.post(
+        '/logout',
+        {},
+        {
+          withCredentials: true,
+          withXSRFToken: true,
+          headers: {
+            Accept: 'application/json',
+          },
+        }
+      )
     } catch (error) {
       // Ignore network/API errors on logout — we still want to clear
       // local state so the user is signed out on this device.
@@ -70,9 +81,21 @@ export function AuthProvider({ children }) {
     }
   }, [])
 
+  const can = useCallback(
+    (permission) => {
+      if (!permission || !Array.isArray(user?.permissions)) {
+        return false
+      }
+
+      return user.permissions.includes(permission)
+    },
+    [user]
+  )
+
   const value = {
     token,
     user,
+    can,
     isAuthenticated: Boolean(token),
     loading,
     login,

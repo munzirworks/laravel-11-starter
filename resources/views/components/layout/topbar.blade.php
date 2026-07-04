@@ -19,14 +19,14 @@
             {{ auth()->user()->role->label() }}
         </span>
 
-        <form method="POST" action="{{ route('logout') }}">
-            @csrf
-            <button
-                type="submit"
-                class="rounded-2xl px-3 py-1.5 text-sm font-medium text-black/80 ring-1 ring-black/10 transition hover:bg-black/5"
-            >
-                {{ __('Log Out') }}
-            </button>
-        </form>
+        <button
+            type="button"
+            @click="logout()"
+            :disabled="loggingOut"
+            class="rounded-2xl px-3 py-1.5 text-sm font-medium text-black/80 ring-1 ring-black/10 transition hover:bg-black/5 disabled:opacity-60"
+        >
+            <span x-show="! loggingOut">{{ __('Log Out') }}</span>
+            <span x-show="loggingOut" x-cloak>{{ __('Logging out...') }}</span>
+        </button>
     </div>
 </header>
