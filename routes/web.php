@@ -23,6 +23,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/customers/create', fn () => view('landing'));
     Route::get('/customers/{id}', fn () => view('landing'))->whereNumber('id');
     Route::get('/customers/{id}/edit', fn () => view('landing'))->whereNumber('id');
+    Route::get('/products', fn () => view('landing'));
+    Route::get('/products/create', fn () => view('landing'));
+    Route::get('/products/{id}', fn () => view('landing'))->whereNumber('id');
+    Route::get('/products/{id}/edit', fn () => view('landing'))->whereNumber('id');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
