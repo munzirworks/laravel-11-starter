@@ -38,6 +38,16 @@
             </x-layout.sidebar-link>
         @endif
 
+        @if (auth()->user()->can('product.view'))
+            <x-layout.sidebar-link
+                :href="url('/products')"
+                :active="request()->is('products') || request()->is('products/*')"
+                icon="products"
+            >
+                {{ __('Products') }}
+            </x-layout.sidebar-link>
+        @endif
+
         @if (auth()->user()->isAdmin())
             <p class="px-4 pb-2 pt-4 text-xs font-semibold uppercase tracking-wider text-zinc-500">
                 {{ __('Administration') }}

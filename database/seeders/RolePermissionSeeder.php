@@ -82,6 +82,8 @@ class RolePermissionSeeder extends Seeder
 
         $warehouse->syncPermissions([
             'product.view',
+            'product.create',
+            'product.update',
             'stock.view',
             'stock.adjust',
             'warehouse.view',

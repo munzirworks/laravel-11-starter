@@ -71,11 +71,24 @@ function BuildingStorefrontIcon() {
   )
 }
 
+function CubeIcon() {
+  return (
+    <svg className="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true">
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M21 7.5L12 3 3 7.5m18 0L12 12m9-4.5v9L12 21m9-4.5L12 12m0 9L3 16.5m9 4.5v-9m0 0L3 7.5"
+      />
+    </svg>
+  )
+}
+
 export default function Sidebar({ isOpen, onClose }) {
   const { user, can } = useAuth()
   const role = roleFromUser(user)
   const isAdmin = role === 'admin'
   const canViewCustomers = can('customer.view')
+  const canViewProducts = can('product.view')
   const pathname = window.location.pathname
   const initial = user?.name?.trim()?.charAt(0)?.toUpperCase() || '?'
 
@@ -113,6 +126,13 @@ export default function Sidebar({ isOpen, onClose }) {
           <a href="/customers" onClick={handleNavClick} className={navLinkClass(pathname === '/customers' || pathname.startsWith('/customers/'))}>
             <BuildingStorefrontIcon />
             <span>Customers</span>
+          </a>
+        )}
+
+        {canViewProducts && (
+          <a href="/products" onClick={handleNavClick} className={navLinkClass(pathname === '/products' || pathname.startsWith('/products/'))}>
+            <CubeIcon />
+            <span>Products</span>
           </a>
         )}
 
