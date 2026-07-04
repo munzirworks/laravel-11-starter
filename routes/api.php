@@ -20,7 +20,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('logout', [AuthController::class, 'logout']);
     Route::get('me', [AuthController::class, 'me']);
 
-    Route::apiResource('customers', CustomerController::class, ['only' => ['index', 'store', 'show', 'update']]);
+    Route::middleware('permission:customer.view')->group(function () {
+        Route::get('customers', [CustomerController::class, 'index']);
+        Route::get('customers/{customer}', [CustomerController::class, 'show']);
+    });
+
+    Route::middleware('permission:customer.create')->post('customers', [CustomerController::class, 'store']);
+    Route::middleware('permission:customer.update')->match(['put', 'patch'], 'customers/{customer}', [CustomerController::class, 'update']);
+
     Route::apiResource('products', ProductController::class, ['only' => ['index', 'store', 'show', 'update']]);
     Route::apiResource('sales-orders', SalesOrderController::class, ['only' => ['index', 'store', 'show', 'update']]);
     Route::apiResource('invoices', InvoiceController::class, ['only' => ['index', 'store', 'show', 'update']]);

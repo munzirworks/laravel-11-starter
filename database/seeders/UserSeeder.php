@@ -11,7 +11,7 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        User::query()->updateOrCreate(
+        $adminUser = User::query()->updateOrCreate(
             ['email' => 'admin@example.com'],
             [
                 'name' => 'Admin User',
@@ -20,8 +20,9 @@ class UserSeeder extends Seeder
                 'email_verified_at' => now(),
             ]
         );
+        $adminUser->syncRoles(['Admin']);
 
-        User::query()->updateOrCreate(
+        $staffUser = User::query()->updateOrCreate(
             ['email' => 'staff@example.com'],
             [
                 'name' => 'Staff User',
@@ -30,5 +31,6 @@ class UserSeeder extends Seeder
                 'email_verified_at' => now(),
             ]
         );
+        $staffUser->syncRoles(['Sales']);
     }
 }
